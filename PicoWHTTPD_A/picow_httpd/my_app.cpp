@@ -58,5 +58,4 @@ void my_app(bool debug_flag) {
 
     printf("Hello from my_app\n"); 
     sleep_ms(1000);                      
-    COMMENT("Custom sleep with debug output every hundred ms");
 }

@@ -9,6 +9,8 @@ extern "C" {
 // New main function to substitute old main
 int pico_httpd_start(void);
 
+void pico_httpd_set_led(bool on);
+
 #ifdef __cplusplus
 }
 #endif

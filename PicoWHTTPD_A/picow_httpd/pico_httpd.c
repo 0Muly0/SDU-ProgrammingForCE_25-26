@@ -15,6 +15,17 @@
 // 8. Imported my_app header to be able to call the my_app function
 #include "my_app.h"
 
+// C: created setter and getter for debug flag to pass it around
+static bool runtime_debug_enabled = false;
+
+bool pico_httpd_get_debug_flag(void) {
+    return runtime_debug_enabled;
+}
+
+void pico_httpd_set_debug_flag(bool enabled) {
+    runtime_debug_enabled = enabled;
+}
+
 void httpd_init(void);
 
 static absolute_time_t wifi_connected_time;
@@ -241,7 +252,7 @@ int pico_httpd_start(void) {
 #else
         sleep_ms(10000);
         // Added my_app function call to print counters
-        my_app(0);
+        my_app(pico_httpd_get_debug_flag());
 #endif
     }
 #if LWIP_MDNS_RESPONDER
