@@ -8,7 +8,7 @@ using namespace std;
 using namespace std::chrono;
 
 // Uncomment this line to enable debug prints
-//#define DEBUG_INFO
+// #define DEBUG_INFO
 
 #ifdef DEBUG_INFO
   #define COMMENT(msg) printf("DEBUG: %s\n", msg)
@@ -35,9 +35,8 @@ ReactionData* pData = &R_data;
 // Interrupt service routine for button press
 void button_isr(uint gpio, uint32_t events) {
     COMMENT("Button interrupt triggered -> store stop time");
+    // Storing the stop time in the struct 
     pData->stop = high_resolution_clock::now();
-    // TODO: Store the stop time in the struct here
-    // Hint: Look at how 'start' is stored in the main loop (use high_resolution_clock::now())
 }
 
 int main() {

@@ -31,16 +31,14 @@ ToggleData* pData = &data;
 void button_isr(uint gpio, uint32_t events) {
     COMMENT("Button interrupt triggered");
     if (gpio == BTN_PIN) {
-        pData->toggle_count++;
-        pData->is_led_on = !pData->is_led_on;
-        gpio_put(LED_PIN, pData->is_led_on);
         // TODO: Increase toggle counter via pointer
+        pData->toggle_count++;
         // TODO: Toggle LED state via pointer
+        // (*pData).is_led_on = !(*pData).is_led_on;
+        pData->is_led_on = !pData->is_led_on;
         // TODO: Update LED output using pointer data
-        //other way:
-        //(*pData).toggle_count++;
-        //(*pData).is_led_on = !(*pData).is_led_on;
-        //gpio_put(LED_PIN, (*pData).is_led_on);
+        // gpio_put(LED_PIN, (*pData).is_led_on);
+        gpio_put(LED_PIN, pData->is_led_on);
     }
 }
 
@@ -71,7 +69,7 @@ int main() {
                data.is_led_on ? "ON" : "OFF");
 
         // WRONG: printing the pointer itself, not the data
-//        printf("Pointer value (wrong use): %p\n", pData);
+        // printf("Pointer value (wrong use): %p\n", pData);
 
         // Access struct indirectly via pointer to the data structure
         printf("Pointer access -> LED toggled %d times, current state: %s\n\n",

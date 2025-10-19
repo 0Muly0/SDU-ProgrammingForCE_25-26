@@ -25,10 +25,9 @@ volatile bool led_on = false;
 void button_isr(uint gpio, uint32_t events) {
     COMMENT("Button interrupt triggered");
     if (gpio == BTN_PIN) {
-        // TODO: Toggle the LED state and update the LED output
-        // Hint: Flip the led_on variable and write it to the LED pin
+        // Flips the LED state and updates the LED output
         LED_STATE = !LED_STATE;
-        gpio_put(LED_PIN,LED_STATE);
+        gpio_put(LED_PIN, LED_STATE);
     }
 }
 
@@ -55,15 +54,14 @@ int main() {
 
     gpio_init(LED_PIN);                              COMMENT("Initialize LED_PIN GPIO");
     gpio_set_dir(LED_PIN, true);                     COMMENT("LED configured as output");
-    gpio_put(LED_PIN, LED_STATE);                      COMMENT("Ensure LED starts OFF");
+    gpio_put(LED_PIN, LED_STATE);                    COMMENT("Ensure LED starts OFF");
 
     gpio_init(BTN_PIN);                              COMMENT("Initialize BTN_PIN GPIO");
     gpio_set_dir(BTN_PIN, false);                    COMMENT("BTN_PIN configured as input");
     gpio_pull_down(BTN_PIN);                         COMMENT("Button configured with pull-down (active-high)");
 
-    // Register interrupt on button pin (rising edge)
-    // TODO: Use gpio_set_irq_enabled_with_callback to register ISR on rising edge
-    gpio_set_irq_enabled_with_callback(BTN_PIN, GPIO_IRQ_EDGE_RISE, true,&button_isr);
+    // Registers interrupt on button pin (rising edge) and links the callback function
+    gpio_set_irq_enabled_with_callback(BTN_PIN, GPIO_IRQ_EDGE_RISE, true, &button_isr);
     COMMENT("Interrupt enabled on BTN_PIN (rising edge)");
 
     printf("Exercise 4a started. Press the button to toggle the LED.\n");
