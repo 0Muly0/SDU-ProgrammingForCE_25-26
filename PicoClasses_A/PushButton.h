@@ -61,10 +61,10 @@ private:
 public:
     Button(uint pinNumber, uint32_t edgeType);  // constructor
 
-    int getPressCount() const;    // returner antal tryk
-    bool isPressed() const;       // returner nuværende knaptilstand
-    bool toggleState() const;     // returner toggle-state
-    bool hasEvent();              // true hvis nyt event siden sidste aflæsning
+    int getPressCount() const;    // returns how many times the button has been pressed
+    bool isPressed() const;       // returns wether the button is pressed or not
+    bool toggleState() const;     // returns toggle state
+    bool hasEvent();              // true if the button went through a debounce
 };
 
 #endif // PUSHBUTTON_H

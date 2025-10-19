@@ -3,6 +3,7 @@
 
 Button* Button::instances[MAX_GPIO] = {nullptr};
 
+// Constructor, initializes the button
 Button::Button(uint pinNumber, uint32_t edgeType)
     : pin(pinNumber), edge(edgeType),
       pressCount(0), toggleStateValue(false),
@@ -13,17 +14,22 @@ Button::Button(uint pinNumber, uint32_t edgeType)
     gpio_set_dir(pin, GPIO_IN);                                 C_PushButton("Configure Button as input");
     gpio_pull_down(pin);                                        C_PushButton("Button configured with pull-down (active-high)");
 
-    instances[pin] = this;                                      C_PushButton("Store this instance in static array for ISR lookup");
+    instances[pin] = this;                                      
+    C_PushButton("Store this instance in static array for ISR lookup");
+    
     gpio_set_irq_enabled_with_callback(pin, edge, true, &Button::gpio_isr); 
-                                                                C_PushButton("Interrupt enabled on Button pin: selected edge registered");
+    C_PushButton("Interrupt enabled on Button pin: selected edge registered");
 }
 
+// Fired when button is pressed
 void Button::gpio_isr(uint gpio, uint32_t events) {
     if (instances[gpio]) {
-        instances[gpio]->startDebounce();                       C_PushButton("Dispatch to correct Button instance startDebounce()");
+        instances[gpio]->startDebounce();                       
+        C_PushButton("Dispatch to correct Button instance startDebounce()");
     }
 }
 
+// Starts the debounce process by storing the btn state
 void Button::startDebounce() {
     lastState = gpio_get(pin);                                  C_PushButton("Read current button state for debounce");
     cancel_alarm(debounceAlarm);                                C_PushButton("Cancel any previous debounce alarm");
@@ -31,11 +37,17 @@ void Button::startDebounce() {
                                                                 C_PushButton("Start debounce timer");
 }
 
+
 int64_t Button::debounceTimerCallback(alarm_id_t id, void* user_data) {
-    Button* self = reinterpret_cast<Button*>(user_data);        C_PushButton("Static timer callback calls handleDebounce() on instance");
+    Button* self = reinterpret_cast<Button*>(user_data);        
+    C_PushButton("Static timer callback calls handleDebounce() on instance");
+    
     return self->handleDebounce();
 }
 
+// The function checks whether the state stays "consistent" even after a small 20ms break
+// This ensures that no V fluctuation caused by the physical structure of the button is mistaken as an actual btn press
+// If the state stays consistent, then the btn is considered pressed: count is increased and its state is toggled
 int64_t Button::handleDebounce() {
     bool currentState = gpio_get(pin);                          C_PushButton("Read button state at debounce timeout");
     if (currentState == lastState && currentState == true) {

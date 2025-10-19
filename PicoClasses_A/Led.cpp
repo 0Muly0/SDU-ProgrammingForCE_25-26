@@ -3,35 +3,36 @@
 #include "Led.h"
 #include "dbop.h"       
 
- // Constructor – initializes the LED GPIO
+// Constructor – initializes the LED GPIO;
+// pin = pinNumber, state = false;
 Led::Led(uint pinNumber) : pin(pinNumber), state(false) {
-    /*TODO - Write code line*/                              C_Led("Initialize LED GPIO");
-    /*TODO - Write code line*/                              C_Led("LED configured as output");
-    /*TODO - Write code line*/                              C_Led("Ensure LED starts OFF");
+    gpio_init(pin);                                         C_Led("Initialize LED GPIO");
+    gpio_set_dir(pin, true);                                C_Led("LED configured as output");
+    gpio_put(pin, state);                                   C_Led("Ensure LED starts OFF");
 }
 
 // Turn LED ON
 void Led::on() {
-    /*TODO - Write code line*/                              C_Led("Update LED state to ON");
-    /*TODO - Write code line*/                              C_Led("Switch LED ON");
+    state = 1;                                              C_Led("Update LED state to ON");
+    gpio_put(pin, state);                                   C_Led("Switch LED ON");
 }
 
 // Turn LED OFF
 void Led::off() {
-    /*TODO - Write code line*/                              C_Led("Update LED state to OFF");
-    /*TODO - Write code line*/                              C_Led("Switch LED OFF");
+    state = 0;                                              C_Led("Update LED state to OFF");
+    gpio_put(pin, state);                                   C_Led("Switch LED OFF");
 }
 
 // Toggle LED state
 void Led::toggle() {
-    /*TODO - Write code line*/                              C_Led("Toggle LED state variable");
-    /*TODO - Write code line*/                              C_Led("Write toggled state to GPIO");
+    state = !state;                                         C_Led("Toggle LED state variable");
+    gpio_put(pin, state);                                   C_Led("Write toggled state to GPIO");
 }
 
 // Set LED state directly
 void Led::setState(bool s) {
-    /*TODO - Write code line*/                              C_Led("Set LED state variable directly");
-    /*TODO - Write code line*/                              C_Led("Write new state to GPIO");
+    state = s ? 1 : 0;                                      C_Led("Set LED state variable directly");
+    gpio_put(pin, state);                                   C_Led("Write new state to GPIO");
 }
 
 // Return current LED state
