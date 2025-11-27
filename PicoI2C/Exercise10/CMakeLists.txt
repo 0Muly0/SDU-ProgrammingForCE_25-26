@@ -39,6 +39,7 @@ add_executable(Exercise10 Exercise10.cpp
     myApp.cpp
     tempHum.cpp
     motor.cpp
+    relay.cpp
     neoPixel.cpp)
 
 pico_set_program_name(Exercise10 "Exercise10")

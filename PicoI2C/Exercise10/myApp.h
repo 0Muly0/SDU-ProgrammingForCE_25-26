@@ -4,6 +4,7 @@
 #include "tempHum.h"
 #include "motor.h"
 #include "neoPixel.h"
+#include "relay.h"
 #include <cstdint>
 #include <string>
 #include <sstream>

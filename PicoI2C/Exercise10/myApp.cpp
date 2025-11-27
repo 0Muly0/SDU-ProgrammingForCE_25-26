@@ -6,7 +6,8 @@
 
 // #define TempHum
 // #define Motor 
-#define RGBLed
+// #define RGBLed
+#define Relay
 
 MyApp::MyApp() {           
         stdio_init_all();                                                      // Initialize stdio
@@ -23,7 +24,7 @@ void MyApp::run() {
     SHTC3 tempHumSensor(i2c_default, 0x70);
     tempHumSensor.wakeUp();
     
-    while (true) {
+    while(true) {
         float temp = tempHumSensor.readTemperature();
         float hum = tempHumSensor.readHumidity();
         printf("Temperature: %.1f C, Humidity: %.1f %%\n", temp, hum);
@@ -37,7 +38,7 @@ void MyApp::run() {
 void MyApp::run() {
     motorDriver motor(i2c_default, 0x22);
 
-    while (true) {
+    while(true) {
         printf("Moving to 180 \n");
         motor.servo(1, 180);
         sleep_ms(1000);
@@ -54,7 +55,7 @@ void MyApp::run() {
 void MyApp::run() {
     NeoPixel pixel = NeoPixel(6, 1);
 
-    while (true) {
+    while(true) {
         printf("Starting color round");
         pixel.setPixelColor(0, 255, 0, 0);
         sleep_ms(500);
@@ -66,6 +67,19 @@ void MyApp::run() {
         sleep_ms(500);
         pixel.setPixelColor(0, 0, 0, 0);
         sleep_ms(500);
+    }
+}
+#endif
+
+#ifdef Relay
+void MyApp::run() {
+    RelayDriver relay = RelayDriver(12);
+
+    while(true) {
+        relay.activate();
+        sleep_ms(1000);
+        relay.deactivate();
+        sleep_ms(1000);
     }
 }
 #endif
